@@ -1,0 +1,12 @@
+<body class="container-fluid">
+
+<div>
+	<div class="nav-bar bg-primary box-shadow container-fluid">
+		<% if (user) { %>
+			<a href="/logout" class="pull-right" title="Sign out" id="nav-logout"><i class="fa fa-2x fa-sign-out" aria-hidden="true"></i></a>
+		<% } else { %>
+			<a href="/auth/facebook" class="pull-right" title="Sign in" id="nav-login"><i class="fa fa-2x fa-sign-in" aria-hidden="true"></i></a>
+		<% } %>	
+	</div>
+	<div id="nav-text"></div>
+</div>

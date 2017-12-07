@@ -1,0 +1,26 @@
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+
+<title>Free Code Camp Nitelife App</title>
+
+<%- include css-includes %>
+
+
+<%- include navbar %>
+
+<div class="row top-10-down container-fluid">
+	<div class="container-fluid col-lg-10 col-xs-12 col-lg-offset-1 bg-white box-shadow">
+		<div class="row bg-primarycontainer-fluid"><h1>Free Code Camp Nitelife App</h1></div>
+			<% if (user) { %>
+				<h2>Select a poll to see the results and vote, or create a new poll.</h2>
+			<% } else { %>
+				<h2> <%= reqLocation %> </h2>
+			<% } %>	
+				<div class="form-group container-fluid">
+					<input class="form-control pull-left" rows="1" id="searchBox"></input><button class="btn btn-primary pull-right" id="searchButton">Search</button>
+				</div>
+			<div class="well" id="resultArea">
+			</div>
+	</div>
+</div>
+
+<%- include script-includes %>

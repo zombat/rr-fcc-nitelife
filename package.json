@@ -1,0 +1,36 @@
+{
+  "name": "rr-fcc-nitelife",
+  "version": "0.0.1",
+  "description": "Free Code Camp Nitelife App",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js --test",
+    "start": "node server.js"
+  },
+  "author": "Raymond Rizzo",
+  "license": "GPL-3.0",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "connect-ensure-login": "^0.1.1",
+    "cookie-parser": "^1.4.3",
+    "dotenv": "^4.0.0",
+    "ejs": "^2.5.7",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "mongodb": "^2.2.33",
+    "morgan": "^1.9.0",
+    "node-yelp-fusion": "^1.0.4",
+    "passport": "^0.4.0",
+    "passport-facebook": "^2.1.1",
+    "request": "^2.83.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zombat/rr-fcc-nitelife.git"
+  },
+  "bugs": {
+    "url": "https://github.com/zombat/rr-fcc-nitelife/issues"
+  },
+  "homepage": "https://github.com/zombat/rr-fcc-nitelife#readme"
+}
