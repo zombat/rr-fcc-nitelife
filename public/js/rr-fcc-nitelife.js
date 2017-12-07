@@ -1,4 +1,4 @@
-var siteURL = 'https://rr-fcc-backend.herokuapp.com';
+var siteURL = 'https://rr-fcc-nitelife.herokuapp.com';
 var userObject = { 'id' : 'test123'};
 var runningProcesses = 0;
 
