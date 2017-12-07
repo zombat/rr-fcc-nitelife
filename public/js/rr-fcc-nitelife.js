@@ -24,7 +24,7 @@ $( document ).ready(function() {
 	
 	$(document).on('click','.resultButton', function() {
 		alert(this.id);
-		$.getJSON('http://127.0.0.1/update?location=' + $('#searchBox').val().toString() + '&user=' + userObject.id, function(data) {
+		$.getJSON( siteURL + '/update?location=' + $('#searchBox').val().toString() + '&user=' + userObject.id, function(data) {
 			var countGoing = data.goingCount || 0;
 			$('#' + this.id).html('Going <span class="badge">' + goingCount + '</span>');
 		});
@@ -33,11 +33,11 @@ $( document ).ready(function() {
 	$('#searchButton').click(function() {
 		$('#resultArea').empty();
 		$('body').append('<div id="loading-div" class="center-block"><i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i><span class="sr-only">Loading...</span></div>');
-		$.getJSON('http://127.0.0.1/yelpSearch?location=' + $('#searchBox').val().toString(), function(searchData) {
+		$.getJSON( siteURL + '/yelpSearch?location=' + $('#searchBox').val().toString(), function(searchData) {
 				console.log("Search Complete");
 				searchData.forEach(function(result){
 					runningProcesses++;
-					$.getJSON('http://127.0.0.1/checkGoing?location=' + result.id).done(function(data) {
+					$.getJSON( siteURL + '/checkGoing?location=' + result.id).done(function(data) {
 						var countGoing = data.goingCount || 0;
 						runningProcesses--;
 						if(runningProcesses === 0) {	
