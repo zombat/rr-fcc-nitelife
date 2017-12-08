@@ -26,7 +26,8 @@ module.exports = function (app, passport) {
 		});
 		
 	app.get('/auth/facebook',
-	  passport.authenticate('facebook'));
+	  passport.authenticate('facebook'
+}));
 	
 	app.get('/logout', function(httpReq, httpRes){
 	  httpReq.logout();
@@ -38,7 +39,7 @@ module.exports = function (app, passport) {
 	  function(httpReq, httpRes) {
 		// Successful authentication redirect.
 		httpRes.redirect('/');
-		console.log( '\n\n\n\n\n' + httpReq + '\n\n\n\n\n');
+		console.log( '\n\n\n\n\n' + JSON.stringify(httpReq) + '\n\n\n\n\n');
 	  });
 	  
 	app.get('/yelpSearch',
