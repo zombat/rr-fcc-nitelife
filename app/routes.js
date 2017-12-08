@@ -26,7 +26,7 @@ module.exports = function (app, passport) {
 		});
 		
 	app.get('/auth/facebook',
-	  passport.authenticate('facebook' { scope: [
+	  passport.authenticate('facebook', { scope: [
        'TEST12345']
 }));
 	
