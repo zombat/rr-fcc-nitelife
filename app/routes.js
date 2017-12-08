@@ -26,7 +26,9 @@ module.exports = function (app, passport) {
 		});
 		
 	app.get('/auth/facebook',
-	  passport.authenticate('facebook'));
+	  passport.authenticate('facebook', {
+		  'OriginalUrl' : 'http://raymondrizzo.com/test'
+	  }));
 	
 	app.get('/logout', function(httpReq, httpRes){
 	  httpReq.logout();
