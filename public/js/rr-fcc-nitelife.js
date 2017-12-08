@@ -23,7 +23,6 @@ $( document ).ready(function() {
 	});
 	
 	$(document).on('click','.resultButton', function() {
-		alert(this.id);
 		$.getJSON( siteURL + '/update?location=' + $('#searchBox').val().toString() + '&user=' + userObject.id, function(data) {
 			var countGoing = data.goingCount || 0;
 			$('#' + this.id).html('Going <span class="badge">' + goingCount + '</span>');

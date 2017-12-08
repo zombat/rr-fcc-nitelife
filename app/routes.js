@@ -37,7 +37,7 @@ module.exports = function (app, passport) {
 	  passport.authenticate('facebook', { failureRedirect: '/login' }),
 	  function(httpReq, httpRes) {
 		// Successful authentication redirect.
-		httpRes.redirect('/fcc-voting');
+		httpRes.redirect(httpReq.url);
 		console.log(httpReq);
 	  });
 	  
