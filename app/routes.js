@@ -39,7 +39,7 @@ module.exports = function (app, passport) {
 		// Successful authentication redirect.
 		httpRes.redirect('/');
 		console.log( '\n\n\n\n\n');
-		console.log( '\n\n\n\n\n');
+		console.log(httpReq);
 		console.log( '\n\n\n\n\n');
 	  });
 	  
