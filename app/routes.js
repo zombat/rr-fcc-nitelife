@@ -44,9 +44,6 @@ module.exports = function (app, passport) {
 	  function(httpReq, httpRes) {
 		// Successful authentication redirect.
 		httpRes.redirect('/');
-		console.log( '\n\n\n\n\n');
-		console.log(httpReq);
-		console.log( '\n\n\n\n\n');
 	  });
 	  
 	app.get('/yelpSearch',
@@ -124,6 +121,7 @@ module.exports = function (app, passport) {
 		});
 		
 	app.get('/*', function (httpReq, httpRes) {
+		session.returnTo = httpReq.url;
 		if(httpReq.query.location) {
 			console.log('User location : ' + httpReq.query.location);
 			yelp.search('term=bars&location=' + httpReq.query.location ).then(function(result){
