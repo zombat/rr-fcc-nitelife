@@ -116,7 +116,7 @@ module.exports = function (app, passport) {
 		
 	app.get('/*', function (httpReq, httpRes) {
 		if(httpReq.query.location) {
-			httpReq.session.returnTo = req.originalUrl || req.url
+			httpReq.session.returnTo = httpReq.originalUrl || httpReq.url
 			console.log('User location : ' + httpReq.query.location);
 			yelp.search('term=bars&location=' + httpReq.query.location ).then(function(result){
 				httpRes.render('home', { 'user': httpReq.user, 'reqLocation' : httpReq.query.location, 'yelpResults' : result.businesses } );
