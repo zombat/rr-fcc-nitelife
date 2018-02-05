@@ -26,9 +26,7 @@ module.exports = function (app, passport) {
 		});
 		
 	app.get('/auth/facebook',
-	  passport.authenticate('facebook'), function(httpReq, httpRes){
-		  console.log('fb ' + JSON.stringify(httpReq));
-	  });
+	  passport.authenticate('facebook'));
 	
 	app.get('/logout', function(httpReq, httpRes){
 	  httpReq.logout();
