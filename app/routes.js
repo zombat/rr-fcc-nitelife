@@ -26,7 +26,10 @@ module.exports = function (app, passport) {
 		});
 		
 	app.get('/auth/facebook',
-	  passport.authenticate('facebook'));
+	  passport.authenticate('facebook'), {
+		successReturnToOrRedirect: '/',	  
+		failureRedirect: '/login',
+		failureFlash: true });
 	
 	app.get('/logout', function(httpReq, httpRes){
 	  httpReq.logout();
