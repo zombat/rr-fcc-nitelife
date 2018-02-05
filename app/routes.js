@@ -114,16 +114,29 @@ module.exports = function (app, passport) {
 			}
 		});
 		
-	app.get('/*', function (httpReq, httpRes) {
-		if(httpReq.query.location) {
-			httpReq.session.returnTo = httpReq.originalUrl || httpReq.url
-			console.log('User location : ' + httpReq.query.location);
-			yelp.search('term=bars&location=' + httpReq.query.location ).then(function(result){
-				httpRes.render('home', { 'user': httpReq.user, 'reqLocation' : httpReq.query.location, 'yelpResults' : result.businesses } );
-			});
-		} else {
-			httpRes.render('home', { user: httpReq.user, reqLocation : httpReq.query.location, 'yelpResults' : null } );
-		}
 		
-	});	
+mongo.connect(MONGO_URI, function(err, db) {		
+		db.collection('fcc-nitelife', function (err, collection) { 
+		assert.equal(null, err);
+		console.log('Connected to MongoDB');
+		
+		
+		
+		app.get('/*', function (httpReq, httpRes) {
+			if(httpReq.query.location) {
+				httpReq.session.returnTo = httpReq.originalUrl || httpReq.url
+				console.log('User location : ' + httpReq.query.location);
+				yelp.search('term=bars&location=' + httpReq.query.location ).then(function(result){
+					httpRes.render('home', { 'user': httpReq.user, 'reqLocation' : httpReq.query.location, 'yelpResults' : result.businesses } );
+				});
+			} else {
+				httpRes.render('home', { user: httpReq.user, reqLocation : httpReq.query.location, 'yelpResults' : null } );
+			}	
+		});	
+		
+		
+		
+		});
+		
+
 };

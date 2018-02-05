@@ -8,6 +8,7 @@ const express = require('express'),
 	routes = require('./app/routes.js'),
 	app = express(),
 	mongo = require('mongodb').MongoClient,
+	assert = require('assert'),
 	MONGO_USER = process.env.MONGO_USER,
 	MONGO_PASSWORD = process.env.MONGO_PASSWORD,
 	MONGO_STRING = process.env.MONGO_STRING,
@@ -61,6 +62,6 @@ app.use(passport.session());
 
 
 // Set routes and start server.	
-routes(app, passport, mongo, MONGO_URI);	
+routes(app, passport, mongo, MONGO_URI, assert);	
 app.listen(httpPort);
 console.log('HTTP listening on port ' + httpPort);
