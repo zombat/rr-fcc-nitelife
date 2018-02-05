@@ -26,10 +26,7 @@ module.exports = function (app, passport) {
 		});
 		
 	app.get('/auth/facebook',
-	  passport.authenticate('facebook', {
-		successReturnToOrRedirect: '/',	  
-		failureRedirect: '/login',
-		failureFlash: true }));
+	  passport.authenticate('facebook'));
 	
 	app.get('/logout', function(httpReq, httpRes){
 	  httpReq.logout();
@@ -37,7 +34,10 @@ module.exports = function (app, passport) {
 	});
 	
 	app.get('/auth/facebook/callback',
-	  passport.authenticate('facebook', { failureRedirect: '/login' }),
+	  passport.authenticate('facebook', {
+		successReturnToOrRedirect: '/',	  
+		failureRedirect: '/login',
+		failureFlash: true }),
 	  function(httpReq, httpRes) {
 		// Successful authentication redirect.
 		httpRes.redirect('/');
