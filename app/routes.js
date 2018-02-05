@@ -8,14 +8,16 @@ module.exports = function (app, passport) {
 			res.redirect('/');
 		}
 	}
-		
+	
+/*	
 	app.get('/get-user',
 	  require('connect-ensure-login').ensureLoggedIn(),
 	  function(httpReq, httpRes){
 		httpRes.setHeader('Content-Type', 'application/json');
 		httpRes.end(JSON.stringify(httpReq.user));
 	 });		  
-		
+*/
+	
 	app.route('/login')
 		.get(function (httpReq, httpRes) {
 			if(httpReq.user){	
