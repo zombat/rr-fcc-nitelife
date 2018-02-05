@@ -26,7 +26,9 @@ module.exports = function (app, passport) {
 		});
 		
 	app.get('/auth/facebook',
-	  passport.authenticate('facebook'));
+	  passport.authenticate('facebook')function(httpReq, httpRes){
+		  console.log('fb ' + JSON.stringify(httpReq));
+	  });
 	
 	app.get('/logout', function(httpReq, httpRes){
 	  httpReq.logout();
@@ -114,8 +116,7 @@ module.exports = function (app, passport) {
 		});
 		
 	app.get('/*', function (httpReq, httpRes) {
-		console.log(getFullUrl(querystring.unescape(returnTo)));
-		httpReq.session.returnTo = getFullUrl(querystring.unescape(returnTo));
+		console.log(JSON.stringify(httpReq));
 		if(httpReq.query.location) {
 			console.log('User location : ' + httpReq.query.location);
 			yelp.search('term=bars&location=' + httpReq.query.location ).then(function(result){
