@@ -8,18 +8,38 @@
 <%- include navbar %>
 
 <div class="row top-10-down container-fluid">
-	<div class="container-fluid col-lg-10 col-xs-12 col-lg-offset-1 bg-white box-shadow">
-		<div class="row bg-primarycontainer-fluid"><h1>Free Code Camp Nitelife App</h1></div>
-			<% if (user) { %>
-				<h2>Select a poll to see the results and vote, or create a new poll.</h2>
-			<% } else { %>
-				<h2> <%= reqLocation %> </h2>
-			<% } %>	
-				<div class="form-group container-fluid">
-					<input class="form-control pull-left" rows="1" id="searchBox"></input><button class="btn btn-primary pull-right" id="searchButton">Search</button>
-				</div>
-			<div class="well" id="resultArea">
+	<div class="container-fluid col-lg-10 col-sm-12 col-xs-12 col-lg-offset-1 bg-white box-shadow">
+		<div class="row bg-primary container-fluid"><h1>Free Code Camp Nitelife App</h1></div>
+		
+		<form action="/" method="get">
+			<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
+				<input class="form-control" type="text" name="location">
 			</div>
+			<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+				<button type="submit" class="btn btn-primary btn-block">Search</button>
+			</div>
+		</form>
+	</div>
+	<div class="container-fluid col-lg-10 col-sm-12 col-xs-12 col-lg-offset-1 bg-white box-shadow">
+			<div class="well" id="resultArea">			
+				<% if (yelpResults) { %>
+					<% yelpResults.forEach(function(result) { %>
+						<div>
+							<div class="location-image pull-left img-thumbnail">
+								<a href=" <%= result.url %> "><img src=" <%= result.image_url %>" /></a>
+							</div>
+							<div class="location-details">
+								<div class="location-name"><%= result.name %></div>
+								<button class="btn btn-primary resultButton" id=" <%= result.id %> " type="button">
+									Going <span class="badge">0</span>
+								</button>
+							</div>
+						</div>					
+					<% }); %>
+				<% } else { %>
+				<% } %>	
+			</div>
+		
 	</div>
 </div>
 

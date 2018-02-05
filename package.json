@@ -17,7 +17,7 @@
     "ejs": "^2.5.7",
     "express": "^4.16.2",
     "express-session": "^1.15.6",
-    "mongodb": "^2.2.33",
+    "mongodb": "^2.2.34",
     "morgan": "^1.9.0",
     "node-yelp-fusion": "^1.0.4",
     "passport": "^0.4.0",
