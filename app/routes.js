@@ -30,8 +30,7 @@ module.exports = function (app, passport) {
 	app.get('/auth/facebook', function(httpReq, httpRes){
 		console.log(httpReq.headers.referer);
 		httpReq.returnTo = httpReq.headers.referer;
-		passport.authenticate('facebook');
-	  });
+		}, passport.authenticate('facebook'));
 	
 	app.get('/logout', function(httpReq, httpRes){
 	  httpReq.logout();
