@@ -114,8 +114,8 @@ module.exports = function (app, passport) {
 		});
 		
 	app.get('/*', function (httpReq, httpRes) {
-		console.log(httpReq.referer);
-		httpReq.session.returnTo = httpReq.url;
+		console.log(getFullUrl(querystring.unescape(returnTo)));
+		httpReq.session.returnTo = getFullUrl(querystring.unescape(returnTo));
 		if(httpReq.query.location) {
 			console.log('User location : ' + httpReq.query.location);
 			yelp.search('term=bars&location=' + httpReq.query.location ).then(function(result){
