@@ -114,6 +114,7 @@ module.exports = function (app, passport) {
 		});
 		
 	app.get('/*', function (httpReq, httpRes) {
+		console.log(httpReq.url);
 		httpReq.session.returnTo = httpReq.url;
 		if(httpReq.query.location) {
 			console.log('User location : ' + httpReq.query.location);
