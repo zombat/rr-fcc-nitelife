@@ -27,10 +27,7 @@ module.exports = function (app, passport) {
 			}
 		});
 		
-	app.get('/auth/facebook', passport.authenticate('facebook'), function(httpReq, httpRes){
-		console.log('\n\n\n' + httpReq.headers.referer);
-		httpReq.returnTo = httpReq.headers.referer;
-		});
+	app.get('/auth/facebook', passport.authenticate('facebook'));
 	
 	app.get('/logout', function(httpReq, httpRes){
 	  httpReq.logout();
@@ -119,6 +116,8 @@ module.exports = function (app, passport) {
 		
 	app.get('/*', function (httpReq, httpRes) {
 		if(httpReq.query.location) {
+			console.log('\n\n\n' + httpReq.headers.referer);
+			httpReq.returnTo = httpReq.headers.referer;
 			console.log('User location : ' + httpReq.query.location);
 			yelp.search('term=bars&location=' + httpReq.query.location ).then(function(result){
 				httpRes.render('home', { 'user': httpReq.user, 'reqLocation' : httpReq.query.location, 'yelpResults' : result.businesses } );
