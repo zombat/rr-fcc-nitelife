@@ -27,9 +27,7 @@ app.set('view engine', 'ejs');
 // Allow access to /public
 app.use('/public', express.static(process.cwd() + '/public'));
 
-
-
-// Passport bits... May move these to a seperate file to keep it clean.
+// Passport bits... May move these to a separate file to keep it clean.
 passport.use(new FacebookStrategy({
     clientID: FACEBOOK_APP_ID,
     clientSecret: FACEBOOK_APP_SECRET,

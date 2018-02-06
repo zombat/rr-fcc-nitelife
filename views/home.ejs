@@ -32,7 +32,13 @@
 							<div class="location-details">
 								<div class="location-name"><%= result.name %></div>
 								<button class="btn btn-primary resultButton" id=" <%= result.id %> " type="button">
-									Going <span class="badge">0</span>
+									<% if (result.fcc.goingCount) { %>
+										Going <span class="badge"><%= result.fcc.goingCount %></span>
+									<% } else { %>
+										Going <span class="badge">0</span>
+									<% } %>	
+								
+									
 								</button>
 							</div>
 						</div>					
