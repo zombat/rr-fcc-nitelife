@@ -30,16 +30,13 @@
 								<a href=" <%= result.url %> "><img src=" <%= result.image_url %>" /></a>
 							</div>
 							<div class="location-details">
-								<div class="location-name"><%= result.name %></div>
-								<button class="btn btn-primary resultButton" id=" <%= result.id %> " type="button">
-									<% if (result.fcc.goingCount) { %>
-										Going <span class="badge"><%= result.fcc.goingCount %></span>
-									<% } else { %>
-										Going <span class="badge">0</span>
-									<% } %>	
+								<div class="location-name"><h2><%= result.name %></h2></div>
 								
-									
-								</button>
+								<% if (result.fcc.imGoing) { %>
+									<a class="btn btn-success resultButton" href="/API?location=<%= reqLocation%>&locationId=<%= result.id %>">You Are Going <span class="badge"><%= result.fcc.goingCount %> going</span></a>
+								<% } else { %>
+									<a class="btn btn-primary resultButton" href="/API?location=<%= reqLocation%>&locationId=<%= result.id %>">Go <span class="badge"><%= result.fcc.goingCount %> going</span></a>								
+								<% } %>											
 							</div>
 						</div>					
 					<% }); %>

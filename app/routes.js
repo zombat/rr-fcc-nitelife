@@ -1,7 +1,10 @@
 
 module.exports = function (app, passport) {
 
-	var test = true;
+	var test = false;
+	
+	var user = { 'id': '1720649694676935', 'displayName': 'Raymond Rizzo', 'name': {}, 'provider': 'facebook', '_raw': "{ 'name':'Raymond Rizzo','id':'1720649694676935' '_json': { 'name': 'Raymond Rizzo', 'id': '1720649694676935' } }" };
+										
 
 	function isLoggedIn (req, res, next) {
 		if (req.isAuthenticated()) {
@@ -22,91 +25,7 @@ module.exports = function (app, passport) {
 	
 
 	  
-	
-	// Depreciated 	
-	app.get('/yelpSearch',
-	  function(httpReq, httpRes) {
-			yelp.search('term=bars&location=' + httpReq.query.location ).then(function(result){
-				httpRes.writeHead(200, { 'Content-Type': 'application/json' });
-				httpRes.end(JSON.stringify(result.businesses));
-			});
-		});    
-	
-	app.get('/update',
-	  function(httpReq, httpRes) {
-			if(httpReq.query.location && httpReq.query.user){
-				mongo.connect(MONGO_URI, function(err, db) {
-						db.collection('fcc-nitelife', function (err, collection) {  
-							collection.findOne({ 'locationId' : httpReq.query.location }).then(function(document) {
-								if(document){
-									httpRes.setHeader('Content-Type', 'application/json');
-									httpRes.end(JSON.stringify(document));
-								} else {
-									document = {'zeroResults' : true }
-									httpRes.setHeader('Content-Type', 'application/json');
-									httpRes.end(JSON.stringify(document));
-								}
-								db.close();
-						  });
-						});
-					});
-			}
-			
-			
-				/*
-				
-				console.log('atlas query for: ' + httpReq.query.location);
-				mongo.connect(MONGO_URI, function(err, db) {
-						db.collection('fcc-nitelife', function (err, collection) {  
-							collection.findOne({ 'locationId' : httpReq.query.location }).then(function(document) {
-								if(document){
-									httpRes.setHeader('Content-Type', 'application/json');
-									httpRes.end(JSON.stringify(document));
-								} else {
-									document = {'zeroResults' : true }
-									httpRes.setHeader('Content-Type', 'application/json');
-									httpRes.end(JSON.stringify(document));
-								}
-								db.close();
-						  });
-						});
-					});
-					
-					*/
-			});
-	
-	
-	
-	// Depreciated
-	
-	app.get('/checkGoing',
-	  function(httpReq, httpRes) {
-			if(httpReq.query.location){
-				console.log('atlas query for: ' + httpReq.query.location);
-				mongo.connect(MONGO_URI, function(err, db) {
-						db.collection('fcc-nitelife', function (err, collection) {  
-							collection.findOne({ 'locationId' : httpReq.query.location }).then(function(document) {
-								if(document){
-									httpRes.setHeader('Content-Type', 'application/json');
-									httpRes.end(JSON.stringify(document));
-								} else {
-									document = {'zeroResults' : true }
-									httpRes.setHeader('Content-Type', 'application/json');
-									httpRes.end(JSON.stringify(document));
-								}
-								db.close();
-						  });
-						});
-					});
-			}
-		});
-		
-		
-	
-	
-	
-	
-	
+
 	mongo.connect(MONGO_URI, function(err, db) {
 		db.collection('fcc-nitelife', function (err, collection) {  
 			assert.equal(null, err);
@@ -139,6 +58,53 @@ module.exports = function (app, passport) {
 			
 // -------------------------------------------------------------------------  Passport routes end
 
+			app.get('/API',
+				require('connect-ensure-login').ensureLoggedIn(),
+				function (httpReq, httpRes) {
+				if(httpReq.query.locationId){
+					var mongoResults = collection.findOne({ 'locationId' : httpReq.query.locationId } );
+					mongoResults.then(function(doc){
+					if(!doc){
+						console.log('no doc');
+						var doc = {
+							'locationId' : httpReq.query.locationId,
+							'goingCount' : 1,
+							'going' : [ user.id.toString() ]
+						};
+						collection.insertOne( doc ).then(function(){
+							httpRes.redirect('/?location=' + httpReq.query.location);
+						});
+					} else {
+						// See if the user is going.					
+						if(doc.going.indexOf(user.id) != -1){
+							console.log('already going');
+							// If already going, remove.
+							doc.goingCount--;
+							console.log(doc.goingCount);
+							doc.going.splice(doc.going.indexOf(user.id),1);
+							console.log(doc.going);
+						} else {
+							console.log('not already going');
+							// If not going, add.
+							doc.goingCount++;
+							console.log(doc.goingCount);
+							doc.going.push(user.id.toString());
+							console.log(doc.going);
+						}
+						collection.updateOne({ 'locationId' : httpReq.query.locationId }, doc ).then(function(){
+							httpRes.redirect('/?location=' + httpReq.query.location);
+						});
+					}
+						
+						
+						
+					});
+				}
+				
+				
+			});
+
+
 		// Main route	
 			app.get('/*', function (httpReq, httpRes) {
 				var yelpResults;
@@ -161,7 +127,10 @@ module.exports = function (app, passport) {
 						// Build array for single DB query.
 						var idArray = [];
 						yelpResults.forEach(function(result){	
-							result.fcc = { 'goingCount' : 0 };
+							result.fcc = {
+								'goingCount' : 0,
+								'going' : [ ]
+								};
 							idArray.push(result.id);
 						});
 					
@@ -183,25 +152,38 @@ module.exports = function (app, passport) {
 									yelpResults.forEach(function(result){
 										if(result.id == doc.locationId){
 											result.fcc.goingCount = doc.goingCount;
+											result.fcc.going = doc.going;
+											
+											if(doc.going.indexOf(user.id) != -1){
+												result.fcc.imGoing = true;
+											}
+																				
 										}
 									});
 									// Only render the page when complete.
 									if(opCount == docs.length){
-										httpRes.render('home', { user: httpReq.user, reqLocation : httpReq.query.location, 'yelpResults' : yelpResults } );
+										httpRes.render('home', { 'user': user, 'reqLocation' : httpReq.query.location, 'yelpResults' : yelpResults } );
+										// httpRes.render('home', { 'user': httpReq.user , reqLocation : httpReq.query.location, 'yelpResults' : yelpResults } );
 									} else {
 										opCount++;
 									}
-															
+									
 								});
 							} else {
-								httpRes.render('home', { user: httpReq.user, reqLocation : httpReq.query.location, 'yelpResults' : yelpResults } );
+								httpRes.render('home', { user: user, reqLocation : httpReq.query.location, 'yelpResults' : yelpResults } );
+								// httpRes.render('home', { user: httpReq.user, reqLocation : httpReq.query.location, 'yelpResults' : yelpResults } );
 							}
 						});
 					});
 					
 				} else {
-					httpRes.render('home', { user: httpReq.user, reqLocation : httpReq.query.location, 'yelpResults' : null } );
+					httpRes.render('home', { user: user, reqLocation : httpReq.query.location, 'yelpResults' : null } );
+					// httpRes.render('home', { user: httpReq.user, reqLocation : httpReq.query.location, 'yelpResults' : null } );
 				}
+				
+				if(test){
+							console.log(JSON.stringify(yelpResults));
+						}
 			});		
 			
 			
