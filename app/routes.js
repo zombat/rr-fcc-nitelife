@@ -14,6 +14,10 @@ module.exports = function (app, passport) {
 			assert.equal(null, err);
 			console.log('Connected to MongoDB');
 			
+			app.get('/privacy', function(httpReq, httpRes){
+				httpRes.render('privacy', { 'user': httpReq.user } );
+			});
+			
 // -------------------------------------------------------------------------  Passport routes start	
 	
 		app.route('/login')
