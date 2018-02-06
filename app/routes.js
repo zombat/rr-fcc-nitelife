@@ -90,6 +90,7 @@ module.exports = function (app, passport) {
 
 		// Main route	
 			app.get('/*', function (httpReq, httpRes) {
+				
 				var yelpResults;
 				if(httpReq.query.location) {
 					// Set session return, in case of user log in.
@@ -120,9 +121,12 @@ module.exports = function (app, passport) {
 											result.fcc.goingCount = doc.goingCount;
 											result.fcc.going = doc.going;
 											
-											if(doc.going.indexOf(httpReq.user.id) != -1){
-												result.fcc.imGoing = true;
+											if(httpReq.user){
+												if(doc.going.indexOf(httpReq.user.id.toString()) != -1){
+													result.fcc.imGoing = true;
+												}
 											}
+											
 																				
 										}
 									});
