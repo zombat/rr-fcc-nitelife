@@ -1,30 +1,13 @@
 
 module.exports = function (app, passport) {
 
-	var test = false;
-	
-	var user = { 'id': '1720649694676935', 'displayName': 'Raymond Rizzo', 'name': {}, 'provider': 'facebook', '_raw': "{ 'name':'Raymond Rizzo','id':'1720649694676935' '_json': { 'name': 'Raymond Rizzo', 'id': '1720649694676935' } }" };
-										
-
 	function isLoggedIn (req, res, next) {
 		if (req.isAuthenticated()) {
 			return next();
 		} else {
 			res.redirect('/');
 		}
-	}
-	
-/*	
-	app.get('/get-user',
-	  require('connect-ensure-login').ensureLoggedIn(),
-	  function(httpReq, httpRes){
-		httpRes.setHeader('Content-Type', 'application/json');
-		httpRes.end(JSON.stringify(httpReq.user));
-	 });		  
-*/
-	
-
-	  
+	} 
 
 	mongo.connect(MONGO_URI, function(err, db) {
 		db.collection('fcc-nitelife', function (err, collection) {  
@@ -108,22 +91,13 @@ module.exports = function (app, passport) {
 		// Main route	
 			app.get('/*', function (httpReq, httpRes) {
 				var yelpResults;
-				if(test){
-							console.log(httpReq.user);
-						}
 				if(httpReq.query.location) {
 					// Set session return, in case of user log in.
 					httpReq.session.returnTo = httpReq.originalUrl || httpReq.url
 					
 					// Get search results from Yelp.
 					yelp.search('term=bars&location=' + httpReq.query.location ).then(function(results){
-					
 						yelpResults = results.businesses;
-						
-						if(test){
-							console.log(yelpResults);
-						}
-					
 						// Build array for single DB query.
 						var idArray = [];
 						yelpResults.forEach(function(result){	
@@ -133,20 +107,12 @@ module.exports = function (app, passport) {
 								};
 							idArray.push(result.id);
 						});
-					
-						if(test){
-							console.log(idArray);
-						}
-					
 						// Get all database entries from DB.
 						var mongoResults = collection.find({ 'locationId' : { '$in' : idArray } } );		
 						mongoResults.toArray(function(err,docs){
 							
 							if(docs.length > 0){
 								var opCount = 1;
-								if(test){
-									console.log(docs);
-								}
 								// Find any matching locations and add my data to them.
 								docs.forEach(function(doc){
 									yelpResults.forEach(function(result){
@@ -162,28 +128,21 @@ module.exports = function (app, passport) {
 									});
 									// Only render the page when complete.
 									if(opCount == docs.length){
-										httpRes.render('home', { 'user': user, 'reqLocation' : httpReq.query.location, 'yelpResults' : yelpResults } );
-										// httpRes.render('home', { 'user': httpReq.user , reqLocation : httpReq.query.location, 'yelpResults' : yelpResults } );
+										httpRes.render('home', { 'user': httpReq.user , reqLocation : httpReq.query.location, 'yelpResults' : yelpResults } );
 									} else {
 										opCount++;
 									}
 									
 								});
 							} else {
-								httpRes.render('home', { user: user, reqLocation : httpReq.query.location, 'yelpResults' : yelpResults } );
-								// httpRes.render('home', { user: httpReq.user, reqLocation : httpReq.query.location, 'yelpResults' : yelpResults } );
+								httpRes.render('home', { user: httpReq.user, reqLocation : httpReq.query.location, 'yelpResults' : yelpResults } );
 							}
 						});
 					});
 					
 				} else {
-					httpRes.render('home', { user: user, reqLocation : httpReq.query.location, 'yelpResults' : null } );
-					// httpRes.render('home', { user: httpReq.user, reqLocation : httpReq.query.location, 'yelpResults' : null } );
+					httpRes.render('home', { user: httpReq.user, reqLocation : httpReq.query.location, 'yelpResults' : null } );
 				}
-				
-				if(test){
-							console.log(JSON.stringify(yelpResults));
-						}
 			});		
 			
 			

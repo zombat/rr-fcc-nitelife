@@ -8,7 +8,7 @@
 <%- include navbar %>
 
 <div class="row top-10-down container-fluid">
-	<div class="container-fluid col-lg-10 col-sm-12 col-xs-12 col-lg-offset-1 bg-white box-shadow">
+	<div class="container-fluid col-lg-10 col-sm-12 col-xs-12 col-lg-offset-1 bg-white">
 		<div class="row bg-primary container-fluid"><h1>Free Code Camp Nitelife App</h1></div>
 		
 		<form action="/" method="get">
@@ -20,9 +20,8 @@
 			</div>
 		</form>
 	</div>
-	
-	<div class="container-fluid col-lg-10 col-sm-12 col-xs-12 col-lg-offset-1 bg-white box-shadow">
-			<div class="well" id="resultArea">			
+	<div class="container-fluid col-lg-10 col-sm-12 col-xs-12 col-lg-offset-1 bg-white">
+			<div class="well top-10-down" id="resultArea">			
 				<% if (yelpResults) { %>
 					<% yelpResults.forEach(function(result) { %>
 						<div>
