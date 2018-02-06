@@ -112,7 +112,8 @@ module.exports = function (app, passport) {
 			assert.equal(null, err);
 			console.log('Connected to MongoDB');
 			
-			
+// -------------------------------------------------------------------------  Passport routes start	
+	
 		app.route('/login')
 			.get(function (httpReq, httpRes) {
 				if(httpReq.user){	
@@ -121,7 +122,8 @@ module.exports = function (app, passport) {
 					httpRes.render('login', { user: httpReq.user });
 				}
 			});
-		
+	
+	
 	app.get('/auth/facebook', passport.authenticate('facebook'));
 	
 	app.get('/logout', function(httpReq, httpRes){
@@ -135,16 +137,14 @@ module.exports = function (app, passport) {
 		failureRedirect: '/login',
 		failureFlash: true }));	
 			
-			
-			
-			
-			
-			
-			
-			
+// -------------------------------------------------------------------------  Passport routes end
+
 		// Main route	
 			app.get('/*', function (httpReq, httpRes) {
 				var yelpResults;
+				if(test){
+							console.log(httpReq.user);
+						}
 				if(httpReq.query.location) {
 					// Set session return, in case of user log in.
 					httpReq.session.returnTo = httpReq.originalUrl || httpReq.url
