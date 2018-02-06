@@ -126,7 +126,7 @@ module.exports = function (app, passport) {
 	
 	app.get('/logout', function(httpReq, httpRes){
 	  httpReq.logout();
-	  httpRes.redirect('/');
+	  httpRes.redirect( httpRes.session.returnTo || '/');
 	});
 	
 	app.get('/auth/facebook/callback',
