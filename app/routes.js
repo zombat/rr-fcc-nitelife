@@ -52,26 +52,26 @@ module.exports = function (app, passport) {
 						var doc = {
 							'locationId' : httpReq.query.locationId,
 							'goingCount' : 1,
-							'going' : [ user.id.toString() ]
+							'going' : [ httpReq.user.id.toString() ]
 						};
 						collection.insertOne( doc ).then(function(){
 							httpRes.redirect('/?location=' + httpReq.query.location);
 						});
 					} else {
 						// See if the user is going.					
-						if(doc.going.indexOf(user.id) != -1){
+						if(doc.going.indexOf(httpReq.user.id) != -1){
 							console.log('already going');
 							// If already going, remove.
 							doc.goingCount--;
 							console.log(doc.goingCount);
-							doc.going.splice(doc.going.indexOf(user.id),1);
+							doc.going.splice(doc.going.indexOf(httpReq.user.id),1);
 							console.log(doc.going);
 						} else {
 							console.log('not already going');
 							// If not going, add.
 							doc.goingCount++;
 							console.log(doc.goingCount);
-							doc.going.push(user.id.toString());
+							doc.going.push(httpReq.user.id.toString());
 							console.log(doc.going);
 						}
 						collection.updateOne({ 'locationId' : httpReq.query.locationId }, doc ).then(function(){
@@ -120,7 +120,7 @@ module.exports = function (app, passport) {
 											result.fcc.goingCount = doc.goingCount;
 											result.fcc.going = doc.going;
 											
-											if(doc.going.indexOf(user.id) != -1){
+											if(doc.going.indexOf(httpReq.user.id) != -1){
 												result.fcc.imGoing = true;
 											}
 																				
@@ -128,20 +128,20 @@ module.exports = function (app, passport) {
 									});
 									// Only render the page when complete.
 									if(opCount == docs.length){
-										httpRes.render('home', { 'user': httpReq.user , reqLocation : httpReq.query.location, 'yelpResults' : yelpResults } );
+										httpRes.render('home', { 'user': httpReq.user , 'reqLocation' : httpReq.query.location, 'yelpResults' : yelpResults } );
 									} else {
 										opCount++;
 									}
 									
 								});
 							} else {
-								httpRes.render('home', { user: httpReq.user, reqLocation : httpReq.query.location, 'yelpResults' : yelpResults } );
+								httpRes.render('home', { 'user': httpReq.user, 'reqLocation' : httpReq.query.location, 'yelpResults' : yelpResults } );
 							}
 						});
 					});
 					
 				} else {
-					httpRes.render('home', { user: httpReq.user, reqLocation : httpReq.query.location, 'yelpResults' : null } );
+					httpRes.render('home', { 'user': httpReq.user, 'reqLocation' : httpReq.query.location, 'yelpResults' : null } );
 				}
 			});		
 			
