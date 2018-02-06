@@ -13,7 +13,7 @@
 		
 		<form action="/" method="get">
 			<div class="col-lg-10 col-md-10 col-sm-12 col-xs-12">
-				<input class="form-control" type="text" name="location">
+				<input class="form-control" type="text" name="location" placeholder="Try searching by city and state, or ZIP.">
 			</div>
 			<div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
 				<button type="submit" class="btn btn-primary btn-block">Search</button>
@@ -35,7 +35,11 @@
 									<a class="btn btn-success resultButton" href="/API?location=<%= reqLocation%>&locationId=<%= result.id %>">You Are Going <span class="badge"><%= result.fcc.goingCount %> going</span></a>
 								<% } else { %>
 									<a class="btn btn-primary resultButton" href="/API?location=<%= reqLocation%>&locationId=<%= result.id %>">Go <span class="badge"><%= result.fcc.goingCount %> going</span></a>								
-								<% } %>											
+								<% } %>	
+								<br />
+								<img src="/public/yelpstars/regular_<%= result.rating %>.png" /><a href="https://yelp.com" alt="Powered by Yelp" ><img class="yelp-logo" src="/public/yelpstars/Yelp_trademark_RGB_outline.png" /></a>
+								<br />
+								<p>Based on <%= result.review_count %> reviews</p>
 							</div>
 						</div>					
 					<% }); %>

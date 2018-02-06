@@ -21,7 +21,7 @@ module.exports = function (app, passport) {
 				if(httpReq.user){	
 					httpRes.render('home', { user: httpReq.user } );
 				} else {
-					httpRes.render('login', { user: httpReq.user });
+					httpRes.redirect('/auth/facebook');
 				}
 			});
 	
@@ -101,7 +101,8 @@ module.exports = function (app, passport) {
 						yelpResults = results.businesses;
 						// Build array for single DB query.
 						var idArray = [];
-						yelpResults.forEach(function(result){	
+						yelpResults.forEach(function(result){
+							console.log(result);							
 							result.fcc = {
 								'goingCount' : 0,
 								'going' : [ ]
